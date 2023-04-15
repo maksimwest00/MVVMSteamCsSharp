@@ -12,6 +12,7 @@ namespace MVVM
 {
     public class Account : BaseViewModel
     {
+        
         public string Login { get; set; }
         public string Password { get; set; }
         public Account(string login, string password)
@@ -30,13 +31,4 @@ namespace MVVM
         //#endregion
     }
 
-    public class AccountMain
-    {
-        public string Login { get; set; }
-        public string Password { get; set; }
-    }
-    public class RootAccs
-    {
-        public List<AccountMain> MyArray { get; set; }
-    }
 }

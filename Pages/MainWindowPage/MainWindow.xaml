@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MVVM" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525"
+        Title="SteamAccountManager" Height="300" Width="600"
         WindowStartupLocation="CenterScreen"
         DataContext="{x:Static local:App.MainViewModel}">
     <Window.Resources>
@@ -20,6 +20,7 @@
             <Setter Property="Width" Value="40" />
             <Setter Property="Margin" Value="5" />
         </Style>
+        <local:IndexConverter x:Key="IndexConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -28,21 +29,25 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="0.2*" />
         </Grid.RowDefinitions>
         <Menu Grid.ColumnSpan="2" >
-            <MenuItem Header="Файл">
-                <MenuItem Header="Открыть" Command="{Binding OpenCommand}" />
-                <MenuItem Header="Сохранить" Command="{Binding SaveCommand}" />
+            <MenuItem Header="File">
+                <MenuItem Header="Open" Command="{Binding OpenCommand}" />
+                <MenuItem Header="Save" Command="{Binding SaveCommand}" />
             </MenuItem>
             <MenuItem Header="Тест">
-                <MenuItem Header="Открыть новое окно" Command="{Binding AddAccountOpenWindow}" />
+                <MenuItem Header="Open new window" Command="{Binding AddAccountOpenWindow}" />
             </MenuItem>
         </Menu>
-        <ListBox Grid.Row="1" 
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <TextBlock Text="List Accounts"/>
+            <ListBox Grid.Column="1" Grid.Row="1" 
                  ItemsSource="{Binding Accounts}"
-                 SelectedItem="{Binding SelectedAccount}">
+                 SelectedItem="{Binding SelectedAccount}" Visibility="Visible">
+
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction
@@ -78,13 +83,63 @@
             </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding Path=Login}" />
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                            <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                         AncestorType={x:Type ListBoxItem}}, 
+                                         Converter={StaticResource IndexConverter}}" Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding Login}" />
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
+        </StackPanel>
+        <Grid Grid.Column="0" Grid.Row="1">
+            <GroupBox Grid.Column="0" Grid.Row="1" Header="Add Steam Account" Width="Auto">
+                <Grid>
+                    <StackPanel>
+                        <TextBlock Text="UserName"/>
+                        <TextBox></TextBox>
+                        <TextBlock Text="Password"/>
+                        <TextBox></TextBox>
+                        <Button Content="Add One" Width="Auto"/>
+                        <Button Content="Add Multi" Width="Auto"/>
+                    </StackPanel>
+                    <StackPanel Visibility="Collapsed">
+                        <TextBlock Text="Выбранный аккаунт:"  />
+                        <TextBlock Text="Логин" />
+                        <TextBox Text="{Binding SelectedAccount.Login, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="Пароль" />
+                        <TextBox Text="{Binding SelectedAccount.Password, UpdateSourceTrigger=PropertyChanged}" />
+                        <!--<TextBlock Text="Стим путь" />
+            <TextBox Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" />-->
+                        <TextBlock Text="Поиск по аккаунтам"/>
+                        <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="TextChanged">
+                                    <i:InvokeCommandAction
+                            Command="{Binding SearchAccount}"
+                            CommandParameter="{Binding SearchQuery}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <Grid Grid.Column="0" Grid.Row="2">
+            <GroupBox Header="Steam Path" Visibility="Visible" Height="Auto" VerticalAlignment="Top" Width="Auto">
+                <Grid>
+                    <StackPanel>
+                        <TextBox IsEnabled="False"></TextBox>
+                        <Button Content="Select Path" Width="Auto"/>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+
+
+        <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal" Visibility="Collapsed">
             <Button Command="{Binding AddCommand}">+</Button>
             <Button Command="{Binding RemoveCommand}"
                     CommandParameter="{Binding SelectedAccount}">-</Button>
@@ -98,24 +153,6 @@
                 </i:Interaction.Triggers>
             </Button>
         </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <TextBlock Text="Выбранный аккаунт:"  />
-            <TextBlock Text="Логин" />
-            <TextBox Text="{Binding SelectedAccount.Login, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Text="Пароль" />
-            <TextBox Text="{Binding SelectedAccount.Password, UpdateSourceTrigger=PropertyChanged}" />
-            <!--<TextBlock Text="Стим путь" />
-            <TextBox Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" />-->
-            <TextBlock Text="Поиск по аккаунтам"/>
-            <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="TextChanged">
-                        <i:InvokeCommandAction
-                            Command="{Binding SearchAccount}"
-                            CommandParameter="{Binding SearchQuery}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </TextBox>
-        </StackPanel>
+        
     </Grid>
 </Window>

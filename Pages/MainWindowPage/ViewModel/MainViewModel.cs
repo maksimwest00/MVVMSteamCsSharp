@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Principal;
 using System.Windows.Controls;
 
 namespace MVVM
@@ -36,7 +35,7 @@ namespace MVVM
 
         public void ScrollSelectedItem(object obj)
         {
-            if(obj is ListBox listBox)
+            if (obj is ListBox listBox)
             {
                 listBox.ScrollIntoView(SelectedAccount);
             }
