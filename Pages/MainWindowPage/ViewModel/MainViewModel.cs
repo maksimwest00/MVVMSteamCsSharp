@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Principal;
-using System.Windows;
+using System.Windows.Controls;
 
 namespace MVVM
 {
@@ -15,20 +15,71 @@ namespace MVVM
         IFileService FileService = new JsonFileService();
         IDialogService DialogService = new DefaultDialogService();
 
+        public Account SelectedAccount { get; set; }
+
+        public string SearchQuery { get; set; }
+
         public ObservableCollection<Account> Accounts { get; set; } = new ObservableCollection<Account>
         {
-            new Account("antonsukharev2016", "samsung9300duos")
+            new Account("antonsukharev2016", "samsung9300duos"),
+            new Account("rus_maxon00", "samsung9300duos"),
+            new Account("sharyla1", "samsung9300duos"),
+            new Account("7k2hlu4nw", "samsung9300duos"),
+            new Account("tyqmrwlsc", "samsung9300duos"),
+            new Account("93s66qbc0", "samsung9300duos"),
+            new Account("arv9v0b5f", "samsung9300duos"),
+            new Account("b0574ombz", "samsung9300duos"),
         };
 
-        public Account SelectedAccount { get; set; }
 
         #endregion
 
-
+        public void ScrollSelectedItem(object obj)
+        {
+            if(obj is ListBox listBox)
+            {
+                listBox.ScrollIntoView(SelectedAccount);
+            }
+        }
+        public void SearchAccFromQuery(object obj)
+        {
+            if (obj is string query)
+            {
+                if (!string.IsNullOrWhiteSpace(query))
+                {
+                    SelectedAccount = Accounts.FirstOrDefault(acc => acc.Login.StartsWith(query));
+                }
+                else
+                {
+                    SelectedAccount = null;
+                }
+            }
+        }
 
 
         // Переписать команды тк написаны не читабельно без фоди проперти ченджед
         #region Commands     
+
+        // команда для поиска по аккаунтам
+
+        public RelayCommand SearchAccount
+        {
+            get
+            {
+                return new RelayCommand(SearchAccFromQuery);
+            }
+        }
+
+        // скролл
+        public RelayCommand ScrollSelectedItemCommand
+        {
+            get
+            {
+                return new RelayCommand(ScrollSelectedItem);
+            }
+        }
+
+
 
         // команда открытия нового окна
         public RelayCommand AddAccountOpenWindow
@@ -37,7 +88,7 @@ namespace MVVM
             {
                 return new RelayCommand(obj =>
                 {
-                    DialogService.NewWindow();
+                    DialogService.AddAccountsWindow();
                 });
             }
         }

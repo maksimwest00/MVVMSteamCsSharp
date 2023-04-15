@@ -40,8 +40,42 @@
                 <MenuItem Header="Открыть новое окно" Command="{Binding AddAccountOpenWindow}" />
             </MenuItem>
         </Menu>
-        <ListBox Grid.Row="1" ItemsSource="{Binding Accounts}"
+        <ListBox Grid.Row="1" 
+                 ItemsSource="{Binding Accounts}"
                  SelectedItem="{Binding SelectedAccount}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction
+                            Command="{Binding ScrollSelectedItemCommand}"
+                            CommandParameter="{Binding RelativeSource=
+                                   {RelativeSource
+                                    Mode=FindAncestor,
+                                    AncestorType={x:Type ListBox}}}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <!--В будущем контекст меню можно вынести в MVVM-->
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Account">
+                        <!--<MenuItem Header="Open Steam Profile"/>         Профиль Аккаунта
+                        <MenuItem Header="Open Profile Inventory"/>         Инвентарь аккаунта
+                        <MenuItem Header="CS:GO Folder"/>                   Файлы CS:GO
+                        <MenuItem Header="TF2 Folder"/>                     Файлы TF2
+                        <MenuItem Header="UserData Folder"/>                Файлы Steam
+                        <MenuItem Header="Send console command"/>           Отправить команду-->
+                    </MenuItem>
+
+                    <MenuItem Header="Edit">
+                        <!--<MenuItem Header="Set current date time"/>      Установить текущую дату
+                        <MenuItem Header="Reset date time"/>                Сбросить дату дропа
+                        <MenuItem Header="Disable farm"/>                   Отключить фарм
+                        <MenuItem Header="Reconfigure account"/>            Пересоздать файлы-->
+                    </MenuItem>
+
+                    <!--<MenuItem Header="Send trade offers"/>              Собрать все кейсы
+                    <MenuItem Header="Cancel trading process"/>             Отменить сбор кейсов-->
+                </ContextMenu>
+            </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -64,15 +98,24 @@
                 </i:Interaction.Triggers>
             </Button>
         </StackPanel>
-
-        <StackPanel Grid.Row="1" Grid.Column="1" DataContext="{Binding SelectedAccount}">
+        <StackPanel Grid.Row="1" Grid.Column="1">
             <TextBlock Text="Выбранный аккаунт:"  />
             <TextBlock Text="Логин" />
-            <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding SelectedAccount.Login, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock Text="Пароль" />
-            <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding SelectedAccount.Password, UpdateSourceTrigger=PropertyChanged}" />
             <!--<TextBlock Text="Стим путь" />
             <TextBox Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" />-->
+            <TextBlock Text="Поиск по аккаунтам"/>
+            <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged">
+                        <i:InvokeCommandAction
+                            Command="{Binding SearchAccount}"
+                            CommandParameter="{Binding SearchQuery}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
         </StackPanel>
     </Grid>
 </Window>

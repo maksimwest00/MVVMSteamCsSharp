@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace MVVM
@@ -30,10 +29,10 @@ namespace MVVM
             return false;
         }
 
-        public void NewWindow()
+        public void AddAccountsWindow()
         {
             AddAccountWindow addAccountWindow = new AddAccountWindow();
-            addAccountWindow.Show();
+            addAccountWindow.ShowDialog();
         }
 
         public void ShowMessage(string message)
