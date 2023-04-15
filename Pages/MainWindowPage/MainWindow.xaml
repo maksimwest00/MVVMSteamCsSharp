@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MVVM" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="SteamAccountManager" Height="300" Width="600"
+        Title="SteamAccountManager" Height="400" Width="600"
         WindowStartupLocation="CenterScreen"
         DataContext="{x:Static local:App.MainViewModel}">
     <Window.Resources>
@@ -44,7 +44,7 @@
         </Menu>
         <StackPanel Grid.Column="1" Grid.Row="1">
             <TextBlock Text="List Accounts"/>
-            <ListBox Grid.Column="1" Grid.Row="1" 
+            <ListBox
                  ItemsSource="{Binding Accounts}"
                  SelectedItem="{Binding SelectedAccount}" Visibility="Visible">
 
@@ -61,7 +61,7 @@
             <!--В будущем контекст меню можно вынести в MVVM-->
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Account">
+                    <MenuItem Header="Account(СДЕЛАТЬ)">
                         <!--<MenuItem Header="Open Steam Profile"/>         Профиль Аккаунта
                         <MenuItem Header="Open Profile Inventory"/>         Инвентарь аккаунта
                         <MenuItem Header="CS:GO Folder"/>                   Файлы CS:GO
@@ -70,7 +70,7 @@
                         <MenuItem Header="Send console command"/>           Отправить команду-->
                     </MenuItem>
 
-                    <MenuItem Header="Edit">
+                    <MenuItem Header="Edit(СДЕЛАТЬ)">
                         <!--<MenuItem Header="Set current date time"/>      Установить текущую дату
                         <MenuItem Header="Reset date time"/>                Сбросить дату дропа
                         <MenuItem Header="Disable farm"/>                   Отключить фарм
@@ -92,17 +92,20 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+            <Button Width="Auto" Content="Force Close Steam(СДЕЛАТЬ)"/>
+            <Button Width="Auto" Content="Login Steam(СДЕЛАТЬ)"/>
         </StackPanel>
         <Grid Grid.Column="0" Grid.Row="1">
-            <GroupBox Grid.Column="0" Grid.Row="1" Header="Add Steam Account" Width="Auto">
+            <StackPanel Orientation="Vertical">
+                <GroupBox Header="Add Steam Account" Width="Auto" Height="Auto" VerticalAlignment="Top">
                 <Grid>
                     <StackPanel>
-                        <TextBlock Text="UserName"/>
-                        <TextBox></TextBox>
-                        <TextBlock Text="Password"/>
-                        <TextBox></TextBox>
-                        <Button Content="Add One" Width="Auto"/>
-                        <Button Content="Add Multi" Width="Auto"/>
+                            <TextBlock Text="UserName"/>
+                            <TextBox/>
+                            <TextBlock Text="Password"/>
+                            <TextBox/>
+                            <Button Content="Add One(СДЕЛАТЬ)" Width="Auto"/>
+                            <Button Content="Add Multi(СДЕЛАТЬ)" Width="Auto"/>
                     </StackPanel>
                     <StackPanel Visibility="Collapsed">
                         <TextBlock Text="Выбранный аккаунт:"  />
@@ -125,8 +128,17 @@
                     </StackPanel>
                 </Grid>
             </GroupBox>
+                <GroupBox Header="Steam Path" Visibility="Visible" Height="Auto" VerticalAlignment="Top" Width="Auto">
+                    <Grid>
+                        <StackPanel>
+                            <TextBox IsEnabled="False"></TextBox>
+                            <Button Content="Select Path(СДЕЛАТЬ)" Width="Auto"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+            </StackPanel>
         </Grid>
-        <Grid Grid.Column="0" Grid.Row="2">
+        <Grid Grid.Column="0" Grid.Row="2" Visibility="Collapsed">
             <GroupBox Header="Steam Path" Visibility="Visible" Height="Auto" VerticalAlignment="Top" Width="Auto">
                 <Grid>
                     <StackPanel>
