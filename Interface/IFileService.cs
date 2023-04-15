@@ -8,7 +8,7 @@ namespace MVVM
 {
     public interface IFileService
     {
-        List<Account> Open(string filename);
-        void Save(string filename, List<Account> accountsList);
+        List<T> Open<T>(string filename);
+        void Save<T>(string filename, List<T> accountsList);
     }
 }

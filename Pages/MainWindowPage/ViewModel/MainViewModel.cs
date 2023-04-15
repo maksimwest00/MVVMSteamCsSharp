@@ -12,8 +12,8 @@ namespace MVVM
         #region Public Properties
         public string Title { get; set; } = "Hello AgNet";
 
-        IFileService fileService = new JsonFileService();
-        IDialogService dialogService = new DefaultDialogService();
+        IFileService FileService = new JsonFileService();
+        IDialogService DialogService = new DefaultDialogService();
 
         public ObservableCollection<Account> Accounts { get; set; } = new ObservableCollection<Account>
         {
@@ -24,13 +24,10 @@ namespace MVVM
 
         #endregion
 
-        #region NewAccount Props
-        public string NewAccount_Login { get; set; }
-        public string NewAccount_Password { get; set; }
-        #endregion
 
 
-        // Переписать команды
+
+        // Переписать команды тк написаны не читабельно без фоди проперти ченджед
         #region Commands     
 
         // команда открытия нового окна
@@ -40,20 +37,7 @@ namespace MVVM
             {
                 return new RelayCommand(obj =>
                 {
-                    dialogService.NewWindow();
-                });
-            }
-        }
-
-        // Добавить новый аккаунт
-        public RelayCommand AddNewAccountCommand
-        {
-            get
-            {
-                return new RelayCommand(obj =>
-                {
-                    Account account = new Account(NewAccount_Login, NewAccount_Password);
-                    Accounts.Insert(0, account);
+                    DialogService.NewWindow();
                 });
             }
         }
@@ -69,15 +53,15 @@ namespace MVVM
                   {
                       try
                       {
-                          if (dialogService.SaveFileDialog() == true)
+                          if (DialogService.SaveFileDialog() == true)
                           {
-                              fileService.Save(dialogService.FilePath, Accounts.ToList());
-                              dialogService.ShowMessage("Файл сохранен");
+                              FileService.Save(DialogService.FilePath, Accounts.ToList());
+                              DialogService.ShowMessage("Файл сохранен");
                           }
                       }
                       catch (Exception ex)
                       {
-                          dialogService.ShowMessage(ex.Message);
+                          DialogService.ShowMessage(ex.Message);
                       }
                   }));
             }
@@ -94,20 +78,20 @@ namespace MVVM
                   {
                       try
                       {
-                          if (dialogService.OpenFileDialog() == true)
+                          if (DialogService.OpenFileDialog() == true)
                           {
-                              List<Account> phones = fileService.Open(dialogService.FilePath);
+                              List<Account> accounts = FileService.Open<Account>(DialogService.FilePath);
                               Accounts.Clear();
-                              foreach (var p in phones)
+                              foreach (var acc in accounts)
                               {
-                                  Accounts.Add(p);
+                                  Accounts.Add(acc);
                               }
-                              dialogService.ShowMessage("Файл открыт");
+                              DialogService.ShowMessage("Файл открыт");
                           }
                       }
                       catch (Exception ex)
                       {
-                          dialogService.ShowMessage(ex.Message);
+                          DialogService.ShowMessage(ex.Message);
                       }
                   }));
             }

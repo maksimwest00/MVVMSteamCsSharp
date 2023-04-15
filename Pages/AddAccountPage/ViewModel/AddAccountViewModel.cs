@@ -10,8 +10,8 @@ namespace MVVM
         
         public string? Login { get; set; }
         public string? Password { get; set; }
-        IFileService fileService = new JsonFileService();
-        IDialogService dialogService = new DefaultDialogService();
+        IFileService FileService = new JsonFileService();
+        IDialogService DialogService = new DefaultDialogService();
         #endregion
 
         #region Commands    
@@ -19,10 +19,7 @@ namespace MVVM
         {
             get
             {
-                return new RelayCommand(obj =>
-                {
-                    AddAccount(obj);
-                });
+                return new RelayCommand(AddAccount);
             }
         }
         #endregion
@@ -33,14 +30,14 @@ namespace MVVM
             Account account = new Account(login: Login, password: Password);
             if (CheckAccount(Login))
             {
-                dialogService.ShowMessage("Аккаунт уже добавлен!");
+                DialogService.ShowMessage("Аккаунт уже добавлен!");
                 return;
             }
             else
             {
                 App.MainViewModel.Accounts.Insert(0, account);
                 SaveData();
-                dialogService.ShowMessage("Аккаунт успешно добавлен!");
+                DialogService.ShowMessage("Аккаунт успешно добавлен!");
             }
         }
         private bool CheckAccount(string Login)
@@ -60,7 +57,8 @@ namespace MVVM
 
         private void SaveData()
         {
-            File.WriteAllText("accounts.json", JsonConvert.SerializeObject(App.MainViewModel.Accounts.ToList(), Formatting.Indented));
+            FileService.Save("accounts.json", App.MainViewModel.Accounts.ToList());
+            //File.WriteAllText("accounts.json", JsonConvert.SerializeObject(, Formatting.Indented));
         }
         #endregion
     }

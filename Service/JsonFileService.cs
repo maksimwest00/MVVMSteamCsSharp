@@ -1,23 +1,21 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Json;
 
 namespace MVVM
 {
     public class JsonFileService : IFileService
     {
-        public List<Account> Open(string filename)
+        public List<T> Open<T>(string filename)
         {
             string myJson = File.ReadAllText(filename);
-            List<Account>? accounts = JsonConvert.DeserializeObject<List<Account>>(myJson);
+            List<T>? accounts = JsonConvert.DeserializeObject<List<T>>(myJson);
             return accounts;
         }
 
-        public void Save(string filename, List<Account> phonesList)
+        public void Save<T>(string filename, List<T> accountsList)
         {
-            File.WriteAllText(filename, JsonConvert.SerializeObject(phonesList, Formatting.Indented));
+            File.WriteAllText(filename, JsonConvert.SerializeObject(accountsList, Formatting.Indented));
         }
     }
 }
