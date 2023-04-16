@@ -31,8 +31,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="UI%28СДЕЛАТЬ%29\UI Styles\" />
+    <Folder Include="UI%28СДЕЛАТЬ%29\UI Controls\" />
     <Folder Include="View\" />
     <Folder Include="Localization%28СДЕЛАТЬ%29\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>
